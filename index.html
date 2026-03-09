@@ -45,7 +45,7 @@ body {
   z-index: 999;
   display: flex;
   flex-direction: column;
-  justify(content): center;
+  justify-content: center;
   align-items: center;
   transition: opacity 0.5s ease;
 }
@@ -185,6 +185,10 @@ h1 {
 
 <body>
 
+<audio id="click-sfx">
+  <source src="https://www.fesliyanstudios.com/play-mp3/6" type="audio/mpeg">
+</audio>
+
 <audio id="bg-music" loop>
   <source src="https://files.catbox.moe/p9p663.mp3" type="audio/mpeg">
 </audio>
@@ -197,7 +201,7 @@ h1 {
 </div>
 
 <div class="card" id="profile-card">
-  <img src="https://files.catbox.moe/typ1x7.jpg" alt="Owner" class="profile-pic">
+  <img src="https://files.catbox.moe/b9qxgi.png" alt="Owner" class="profile-pic">
 
   <h1>INQ OWNER</h1>
 
@@ -217,14 +221,14 @@ h1 {
   </p>
 
   <div class="links">
-    <a href="https://wa.me/6283182014581" class="btn">> CONTACT OPERATOR</a>
-    <a href="https://whatsapp.com/channel/0029Vb6hwWfHbFUxwg3m530c" class="btn">> JOIN NETWORK</a>
+    <a href="https://wa.me/6283182014581" class="btn play-sfx">> CONTACT OPERATOR</a>
+    <a href="https://whatsapp.com/channel/0029Vb6hwWfHbFUxwg3m530c" class="btn play-sfx">> JOIN NETWORK</a>
   </div>
 
   <div class="spotify-box">
     <iframe style="border-radius:12px" 
-    src="https://open.spotify.com/embed/playlist/37i9dQZF1AWfMe9zSafeX8?utm_source=generator&theme=0" 
-    width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    src="https://open.spotify.com/playlist/1uVPaLURgB6vKNvnDy7WIs?si=lKjdgtFuTtOWS-C2h3k5EQ&pt=cca5412d6586a024d6729d21cf374ecd&pi=bYIi0tDESlWze" 
+    width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </div>
 
 </div>
@@ -254,17 +258,18 @@ h1 {
   }
   setInterval(drawMatrix, 40);
 
-  // --- LOADER LOGIC ---
+  // --- AUDIO LOGIC ---
   const enterBtn = document.getElementById('enter-btn');
   const loader = document.getElementById('loader');
   const card = document.getElementById('profile-card');
   const bgMusic = document.getElementById('bg-music');
+  const clickSfx = document.getElementById('click-sfx');
 
+  // Suara saat tombol ENTER diklik
   enterBtn.addEventListener('click', () => {
-    // Memulai musik
-    bgMusic.play().catch(() => console.log("User interaction required for audio"));
+    clickSfx.play(); // Putar suara klik
+    bgMusic.play().catch(() => console.log("Audio blocked"));
     
-    // Transisi Loader
     loader.style.opacity = '0';
     setTimeout(() => {
       loader.style.display = 'none';
@@ -272,7 +277,18 @@ h1 {
     }, 500);
   });
 
-  // Re-size canvas on window change
+  // Suara saat Link Sosmed diklik
+  document.querySelectorAll('.play-sfx').forEach(link => {
+    link.addEventListener('click', (e) => {
+      clickSfx.play();
+      // Memberi sedikit delay agar suara terdengar sebelum pindah halaman
+      e.preventDefault();
+      setTimeout(() => {
+        window.location.href = link.href;
+      }, 200);
+    });
+  });
+
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
