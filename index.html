@@ -1,72 +1,271 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Owner Profile | INQ AI BOT</title>
-    <style>
-        body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 350px;
-        }
-        img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid #00fbff;
-            margin-bottom: 15px;
-            object-fit: cover;
-        }
-        h1 { font-size: 24px; margin: 10px 0; color: #00fbff; }
-        p { color: #ccc; font-size: 14px; line-height: 1.6; }
-        .links { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .btn {
-            text-decoration: none;
-            color: white;
-            background: linear-gradient(45deg, #00fbff, #0072ff);
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 0 15px #00fbff; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INQ Owner - System Access</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+/* CSS RESET & BASE VARIABLES */
+:root {
+  --neon-green: #0f0;
+  --dark-bg: #050505;
+}
+
+body {
+  margin: 0;
+  font-family: 'Share Tech Mono', monospace;
+  background: var(--dark-bg);
+  color: var(--neon-green);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden; /* Mencegah scroll saat efek matrix berjalan */
+}
+
+/* BACKGROUND MATRIX CANVAS */
+#matrix-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* LOADING SCREEN */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--dark-bg);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease;
+}
+
+.loader-text {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px var(--neon-green);
+  animation: blink 1s infinite alternate;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+#enter-btn {
+  padding: 12px 24px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 16px;
+  color: var(--neon-green);
+  background: transparent;
+  border: 1px solid var(--neon-green);
+  box-shadow: 0 0 10px var(--neon-green) inset;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#enter-btn:hover {
+  background: var(--neon-green);
+  color: var(--dark-bg);
+  box-shadow: 0 0 20px var(--neon-green);
+}
+
+/* CARD PROFILE (GLASSMORPHISM + NEON) */
+.card {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid var(--neon-green);
+  box-shadow: 0 0 20px var(--neon-green), inset 0 0 15px rgba(0, 255, 0, 0.2);
+  max-width: 350px;
+  width: 90%;
+  /* Sembunyikan card sebelum loading selesai */
+  opacity: 0; 
+  transform: translateY(30px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid var(--neon-green);
+  box-shadow: 0 0 15px var(--neon-green);
+  margin-bottom: 10px;
+  object-fit: cover;
+}
+
+h1 {
+  margin: 10px 0;
+  text-shadow: 0 0 10px var(--neon-green);
+  letter-spacing: 2px;
+}
+
+p {
+  font-size: 14px;
+  color: #a3e6a3;
+  line-height: 1.5;
+}
+
+.links {
+  margin-top: 25px;
+}
+
+.btn {
+  display: block;
+  text-decoration: none;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--neon-green);
+  color: var(--dark-bg);
+  box-shadow: 0 0 20px var(--neon-green);
+}
+
+.spotify {
+  margin-top: 20px;
+  opacity: 0.8;
+  transition: 0.3s;
+}
+.spotify:hover {
+  opacity: 1;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="card">
-        <img src="https://img.sanishtech.com/u/8bf73030cf648c480b66946c31575d08.png" alt="Owner">
-        <h1>INQ Owner</h1>
-        <p>Fullstack Developer & Creator of <b>INQ AI BOT</b>. Suka ngulik codingan dan bikin bot WhatsApp bermanfaat.</p>
-        
-        <div class="links">
-            <a href="https://wa.me/6283182014581" class="btn">WhatsApp Me</a>
-            <a href="https://whatsapp.com/channel/0029Vb6hwWfHbFUxwg3m530c" class="btn" style="background: #25d366;">Saluran WA</a>
-        </div>
-    </div>
+<audio id="bg-music" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
 
-    <audio autoplay loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+<canvas id="matrix-canvas"></canvas>
+
+<div id="loader">
+  <div class="loader-text">SYSTEM INITIALIZATION...</div>
+  <button id="enter-btn">CLICK TO ENTER</button>
+</div>
+
+<div class="card" id="profile-card">
+  <img src="https://img.sanishtech.com/u/8bf73030cf648c480b66946c31575d08.png" alt="Owner">
+  
+  <h1>INQ Owner</h1>
+  
+  <p>
+    > FULLSTACK DEVELOPER<br>
+    > CREATOR OF <b>INQ AI BOT</b><br><br>
+    Suka ngulik coding dan bikin bot WhatsApp yang bermanfaat.
+  </p>
+  
+  <div class="links">
+    <a href="https://wa.me/6283182014581" class="btn">> Execute: WhatsApp Me</a>
+    <a href="https://whatsapp.com/channel/0029Vb6hwWFhBFUxwg3m530c" class="btn">> Execute: Saluran WA</a>
+  </div>
+  
+  <div class="spotify">
+    <iframe style="border-radius:12px"
+    src="https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp" 
+    width="100%" height="80"
+    frameBorder="0"
+    allowfullscreen=""
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+    </iframe>
+  </div>
+
+</div>
+
+<script>
+  // --- 1. MATRIX RAIN EFFECT LOGIC ---
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()_+-='.split('');
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+  const drops = [];
+  
+  for(let x = 0; x < columns; x++) {
+    drops[x] = 1;
+  }
+  
+  function drawMatrix() {
+    // Memberikan efek jejak (trail) yang perlahan menghilang
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = '#0F0'; // Warna hijau neon
+    ctx.font = fontSize + 'px monospace';
+    
+    for(let i = 0; i < drops.length; i++) {
+      const text = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      
+      // Reset drop ke atas secara acak setelah mencapai bawah
+      if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+  
+  // Menjalankan animasi matrix
+  setInterval(drawMatrix, 35);
+
+  // Sesuaikan ukuran canvas jika layar di-resize
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  // --- 2. LOADER & AUTOPLAY LOGIC ---
+  const enterBtn = document.getElementById('enter-btn');
+  const loader = document.getElementById('loader');
+  const card = document.getElementById('profile-card');
+  const bgMusic = document.getElementById('bg-music');
+
+  enterBtn.addEventListener('click', () => {
+    // Play musik (Tergantung device, bisa diblokir, tapi event klik ini me-bypass proteksi browser)
+    bgMusic.play().catch(err => console.log("Audio play failed:", err));
+    
+    // Animasi fade out loader
+    loader.style.opacity = '0';
+    
+    setTimeout(() => {
+      loader.style.display = 'none'; // Hilangkan loader sepenuhnya
+      card.classList.add('show');    // Munculkan card profil
+    }, 500);
+  });
+</script>
 
 </body>
-  </html>
-  
+</html>
