@@ -7,14 +7,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
-  --neon-green: #0f0;
-  --dark-bg: #050505;
+  --neon-blue: #00d4ff;
+  --dark-bg: #020b12;
+  --glow-blue: rgba(0, 212, 255, 0.4);
 }
 body {
   margin: 0;
   font-family: 'Share Tech Mono', monospace;
   background: var(--dark-bg);
-  color: var(--neon-green);
+  color: var(--neon-blue);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,7 +42,7 @@ body {
 .loader-text {
   font-size: 24px;
   margin-bottom: 20px;
-  text-shadow: 0 0 10px var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-blue);
   animation: blink 1s infinite alternate;
 }
 @keyframes blink { 0% { opacity: 1; } 100% { opacity: 0.3; } }
@@ -49,24 +50,24 @@ body {
   padding: 12px 24px;
   font-family: 'Share Tech Mono', monospace;
   font-size: 16px;
-  color: var(--neon-green);
+  color: var(--neon-blue);
   background: transparent;
-  border: 1px solid var(--neon-green);
-  box-shadow: 0 0 10px var(--neon-green) inset;
+  border: 1px solid var(--neon-blue);
+  box-shadow: 0 0 10px var(--neon-blue) inset;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-#enter-btn:hover { background: var(--neon-green); color: var(--dark-bg); box-shadow: 0 0 20px var(--neon-green); }
+#enter-btn:hover { background: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 20px var(--neon-blue); }
 
 /* CARD PROFILE */
 .card {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(2, 11, 18, 0.9);
   backdrop-filter: blur(10px);
   padding: 25px;
   border-radius: 15px;
   text-align: center;
-  border: 1px solid var(--neon-green);
-  box-shadow: 0 0 20px var(--neon-green), inset 0 0 15px rgba(0, 255, 0, 0.1);
+  border: 1px solid var(--neon-blue);
+  box-shadow: 0 0 20px var(--glow-blue), inset 0 0 15px rgba(0, 212, 255, 0.1);
   max-width: 380px; width: 90%;
   opacity: 0; 
   transform: translateY(30px);
@@ -77,42 +78,50 @@ body {
 .card img.profile-pic {
   width: 110px; height: 110px;
   border-radius: 50%;
-  border: 2px solid var(--neon-green);
-  box-shadow: 0 0 15px var(--neon-green);
+  border: 2px solid var(--neon-blue);
+  box-shadow: 0 0 15px var(--neon-blue);
   margin-bottom: 10px; object-fit: cover;
 }
-h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); letter-spacing: 2px; }
+h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-blue); letter-spacing: 2px; }
 
-/* GAME BOX */
-.game-box {
-  background: rgba(0, 255, 0, 0.05);
-  border: 1px dashed var(--neon-green);
+/* GAME & ABOUT BOX */
+.box {
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px dashed var(--neon-blue);
   border-radius: 10px;
   padding: 15px; margin: 15px 0;
   text-align: left;
 }
-.game-title {
+.box-title {
   font-size: 11px; color: var(--dark-bg);
-  background: var(--neon-green);
+  background: var(--neon-blue);
   padding: 2px 8px; display: inline-block;
   margin-bottom: 10px; font-weight: bold;
 }
-.game-stats { font-size: 13px; display: flex; flex-direction: column; gap: 5px; }
-.stat-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0, 255, 0, 0.1); }
+.stats-text { font-size: 13px; display: flex; flex-direction: column; gap: 5px; }
+.stat-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0, 212, 255, 0.1); }
+.about-content { font-size: 12px; line-height: 1.5; color: #e0e0e0; }
 
 .links { margin-top: 15px; }
 .btn {
   display: block; text-decoration: none;
   margin: 8px 0; padding: 10px;
-  border-radius: 5px; border: 1px solid var(--neon-green);
-  color: var(--neon-green); font-size: 13px;
+  border-radius: 5px; border: 1px solid var(--neon-blue);
+  color: var(--neon-blue); font-size: 13px;
   font-weight: bold; transition: 0.3s;
 }
-.btn:hover { background: var(--neon-green); color: var(--dark-bg); box-shadow: 0 0 15px var(--neon-green); }
+.btn:hover { background: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 15px var(--neon-blue); }
+
+.btn-special {
+    background: rgba(0, 212, 255, 0.1);
+    border-style: double;
+    border-width: 3px;
+}
 
 .spotify-box {
-  margin-top: 15px; border-radius: 12px;
-  overflow: hidden; border: 1px solid #1DB954; background: #000;
+  margin-top: 20px; border-radius: 12px;
+  overflow: hidden; border: 1px solid var(--neon-blue); background: #000;
+  display: none;
 }
 </style>
 </head>
@@ -124,7 +133,7 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
 <canvas id="matrix-canvas"></canvas>
 
 <div id="loader">
-  <div class="loader-text">INITIALIZING SYSTEM...</div>
+  <div class="loader-text">INITIALIZING BLUE SYSTEM...</div>
   <button id="enter-btn">DECRYPT ACCESS</button>
 </div>
 
@@ -132,32 +141,38 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
   <img src="https://files.catbox.moe/b9qxgi.png" alt="Owner" class="profile-pic">
   <h1>INQ OWNER</h1>
 
-  <div class="game-box">
-    <div class="game-title">PLAYER IDENTIFICATION: FF</div>
-    <div class="game-stats">
+  <div class="box">
+    <div class="box-title">PLAYER IDENTIFICATION: FF</div>
+    <div class="stats-text">
         <div class="stat-row"><span>NICKNAME</span> <span style="color:#fff">NF` Linn</span></div>
         <div class="stat-row"><span>USER ID</span> <span style="color:#fff">4380079874</span></div>
-        <div class="stat-row"><span>RANK</span> <span style="color:var(--neon-green)">adalah pokoknya 👑</span></div>
+        <div class="stat-row"><span>RANK</span> <span style="color:var(--neon-blue)">adalah pokoknya 👑</span></div>
         <div class="stat-row"><span>ROLE</span> <span style="color:#fff">RUSHER / CODER</span></div>
     </div>
   </div>
 
-  <p style="font-size: 11px;">> FULLSTACK DEVELOPER<br>> CREATOR OF IIN</p>
+  <div class="box">
+    <div class="box-title">ABOUT OWNER</div>
+    <div class="about-content">
+        Seorang pelajar dan pengembang bot WhatsApp yang fokus pada JavaScript. Suka bereksperimen dengan kode, seni visual, dan teknologi web. Sedang membangun ekosistem INQ AI untuk masa depan.
+    </div>
+  </div>
 
   <div class="links">
     <a href="https://wa.me/6283182014581" class="btn sfx-btn">> CONTACT OPERATOR</a>
+    <a href="#" class="btn btn-special" id="show-playlist">> KLIK INI UNTUK TAU PLAYLIST OWNER 😁</a>
     <a href="https://whatsapp.com/channel/0029Vb6hwWfHbFUxwg3m530c" class="btn sfx-btn">> JOIN NETWORK</a>
   </div>
 
-  <div class="spotify-box">
+  <div class="spotify-box" id="spotify-container">
     <iframe style="border-radius:12px" 
-    src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRvui9Df7X?utm_source=generator&theme=0" 
+    src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M" 
     width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </div>
 </div>
 
 <script>
-  // Matrix Effect
+  // Matrix Effect Blue
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -166,9 +181,9 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
   const columns = canvas.width / fontSize;
   const drops = Array(Math.floor(columns)).fill(1);
   function drawMatrix() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillStyle = 'rgba(2, 11, 18, 0.1)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#0F0';
+    ctx.fillStyle = '#00d4ff';
     ctx.font = fontSize + 'px monospace';
     drops.forEach((y, i) => {
       const text = chars[Math.floor(Math.random() * chars.length)];
@@ -179,12 +194,14 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
   }
   setInterval(drawMatrix, 40);
 
-  // Audio & Transition
+  // UI Logic
   const enterBtn = document.getElementById('enter-btn');
   const loader = document.getElementById('loader');
   const card = document.getElementById('profile-card');
   const bgMusic = document.getElementById('bg-music');
   const clickSfx = document.getElementById('click-sfx');
+  const playlistBtn = document.getElementById('show-playlist');
+  const spotifyBox = document.getElementById('spotify-container');
 
   enterBtn.addEventListener('click', () => {
     clickSfx.play();
@@ -193,11 +210,22 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
     setTimeout(() => { loader.style.display = 'none'; card.classList.add('show'); }, 500);
   });
 
+  playlistBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    clickSfx.play();
+    spotifyBox.style.display = (spotifyBox.style.display === 'block') ? 'none' : 'block';
+    if(spotifyBox.style.display === 'block') {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+  });
+
   document.querySelectorAll('.sfx-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       clickSfx.play();
-      e.preventDefault(); 
-      setTimeout(() => { window.location.href = btn.href; }, 200);
+      if(btn.href !== "#") {
+          e.preventDefault(); 
+          setTimeout(() => { window.location.href = btn.href; }, 200);
+      }
     });
   });
 
