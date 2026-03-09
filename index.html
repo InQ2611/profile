@@ -57,6 +57,8 @@ body {
   transition: all 0.3s ease;
 }
 #enter-btn:hover { background: var(--neon-green); color: var(--dark-bg); box-shadow: 0 0 20px var(--neon-green); }
+
+/* CARD PROFILE */
 .card {
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(10px);
@@ -80,6 +82,8 @@ body {
   margin-bottom: 10px; object-fit: cover;
 }
 h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); letter-spacing: 2px; }
+
+/* GAME BOX */
 .game-box {
   background: rgba(0, 255, 0, 0.05);
   border: 1px dashed var(--neon-green);
@@ -88,13 +92,14 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
   text-align: left;
 }
 .game-title {
-  font-size: 12px; color: var(--dark-bg);
+  font-size: 11px; color: var(--dark-bg);
   background: var(--neon-green);
   padding: 2px 8px; display: inline-block;
   margin-bottom: 10px; font-weight: bold;
 }
 .game-stats { font-size: 13px; display: flex; flex-direction: column; gap: 5px; }
 .stat-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0, 255, 0, 0.1); }
+
 .links { margin-top: 15px; }
 .btn {
   display: block; text-decoration: none;
@@ -104,6 +109,7 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
   font-weight: bold; transition: 0.3s;
 }
 .btn:hover { background: var(--neon-green); color: var(--dark-bg); box-shadow: 0 0 15px var(--neon-green); }
+
 .spotify-box {
   margin-top: 15px; border-radius: 12px;
   overflow: hidden; border: 1px solid #1DB954; background: #000;
@@ -136,7 +142,7 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
     </div>
   </div>
 
-  <p style="font-size: 12px;">> FULLSTACK DEVELOPER<br>> CREATOR OF IIN</p>
+  <p style="font-size: 11px;">> FULLSTACK DEVELOPER<br>> CREATOR OF IIN</p>
 
   <div class="links">
     <a href="https://wa.me/6283182014581" class="btn sfx-btn">> CONTACT OPERATOR</a>
@@ -146,11 +152,12 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
   <div class="spotify-box">
     <iframe style="border-radius:12px" 
     src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRvui9Df7X?utm_source=generator&theme=0" 
-    width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </div>
 </div>
 
 <script>
+  // Matrix Effect
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -158,7 +165,6 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
   const fontSize = 15;
   const columns = canvas.width / fontSize;
   const drops = Array(Math.floor(columns)).fill(1);
-
   function drawMatrix() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -173,13 +179,13 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
   }
   setInterval(drawMatrix, 40);
 
+  // Audio & Transition
   const enterBtn = document.getElementById('enter-btn');
   const loader = document.getElementById('loader');
   const card = document.getElementById('profile-card');
   const bgMusic = document.getElementById('bg-music');
   const clickSfx = document.getElementById('click-sfx');
 
-  // SFX saat tombol masuk diklik
   enterBtn.addEventListener('click', () => {
     clickSfx.play();
     bgMusic.play().catch(() => {});
@@ -187,12 +193,11 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-green); l
     setTimeout(() => { loader.style.display = 'none'; card.classList.add('show'); }, 500);
   });
 
-  // SFX untuk semua link di dalam card
   document.querySelectorAll('.sfx-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       clickSfx.play();
       e.preventDefault(); 
-      setTimeout(() => { window.location.href = btn.href; }, 150);
+      setTimeout(() => { window.location.href = btn.href; }, 200);
     });
   });
 
