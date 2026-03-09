@@ -12,6 +12,7 @@
 :root {
   --neon-green: #0f0;
   --dark-bg: #050505;
+  --game-red: #ff003c; /* Warna aksen untuk elemen game */
 }
 
 body {
@@ -22,13 +23,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  overflow: hidden; /* Mencegah scroll saat efek matrix berjalan */
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* BACKGROUND MATRIX CANVAS */
 #matrix-canvas {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -79,21 +80,21 @@ body {
   box-shadow: 0 0 20px var(--neon-green);
 }
 
-/* CARD PROFILE (GLASSMORPHISM + NEON) */
+/* CARD PROFILE */
 .card {
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(5px);
-  padding: 30px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 25px;
   border-radius: 15px;
   text-align: center;
   border: 1px solid var(--neon-green);
-  box-shadow: 0 0 20px var(--neon-green), inset 0 0 15px rgba(0, 255, 0, 0.2);
-  max-width: 350px;
+  box-shadow: 0 0 20px var(--neon-green), inset 0 0 15px rgba(0, 255, 0, 0.1);
+  max-width: 380px;
   width: 90%;
-  /* Sembunyikan card sebelum loading selesai */
   opacity: 0; 
   transform: translateY(30px);
   transition: opacity 1s ease, transform 1s ease;
+  margin: 20px 0;
 }
 
 .card.show {
@@ -101,9 +102,9 @@ body {
   transform: translateY(0);
 }
 
-.card img {
-  width: 120px;
-  height: 120px;
+.card img.profile-pic {
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   border: 2px solid var(--neon-green);
   box-shadow: 0 0 15px var(--neon-green);
@@ -113,49 +114,70 @@ body {
 
 h1 {
   margin: 10px 0;
+  font-size: 22px;
   text-shadow: 0 0 10px var(--neon-green);
   letter-spacing: 2px;
 }
 
-p {
-  font-size: 14px;
-  color: #a3e6a3;
-  line-height: 1.5;
+/* GAME SECTION */
+.game-box {
+  background: rgba(0, 255, 0, 0.05);
+  border: 1px dashed var(--neon-green);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 15px 0;
+  text-align: left;
 }
 
-.links {
-  margin-top: 25px;
+.game-title {
+  font-size: 12px;
+  color: var(--dark-bg);
+  background: var(--neon-green);
+  padding: 2px 8px;
+  display: inline-block;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
+
+.game-stats {
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+.links { margin-top: 15px; }
 
 .btn {
   display: block;
   text-decoration: none;
-  margin: 10px 0;
-  padding: 12px;
-  border-radius: 8px;
-  background: transparent;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 5px;
   border: 1px solid var(--neon-green);
   color: var(--neon-green);
+  font-size: 13px;
   font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-  transition: all 0.3s ease;
+  transition: 0.3s;
 }
 
 .btn:hover {
   background: var(--neon-green);
   color: var(--dark-bg);
-  box-shadow: 0 0 20px var(--neon-green);
+  box-shadow: 0 0 15px var(--neon-green);
 }
 
-.spotify {
-  margin-top: 20px;
-  opacity: 0.8;
-  transition: 0.3s;
-}
-.spotify:hover {
-  opacity: 1;
+.spotify-box {
+  margin-top: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #1DB954;
 }
 </style>
 </head>
@@ -163,107 +185,86 @@ p {
 <body>
 
 <audio id="bg-music" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <source src="https://files.catbox.moe/9869v0.mp3" type="audio/mpeg">
 </audio>
 
 <canvas id="matrix-canvas"></canvas>
 
 <div id="loader">
-  <div class="loader-text">SYSTEM INITIALIZATION...</div>
-  <button id="enter-btn">CLICK TO ENTER</button>
+  <div class="loader-text">CONNECTING TO SERVER...</div>
+  <button id="enter-btn">ACCESS SYSTEM</button>
 </div>
 
 <div class="card" id="profile-card">
-  <img src="https://img.sanishtech.com/u/8bf73030cf648c480b66946c31575d08.png" alt="Owner">
-  
-  <h1>INQ Owner</h1>
-  
-  <p>
+  <img src="https://files.catbox.moe/typ1x7.jpg" alt="Owner" class="profile-pic">
+
+  <h1>INQ OWNER</h1>
+
+  <div class="game-box">
+    <div class="game-title">PLAYER IDENTIFICATION: FF</div>
+    <div class="game-stats">
+        <div class="stat-row"><span>NICKNAME</span> <span style="color:#fff">NF` Linn</span></div>
+        <div class="stat-row"><span>USER ID</span> <span style="color:#fff">4380079874</span></div>
+        <div class="stat-row"><span>RANK</span> <span style="color:var(--neon-green)">adalah pokoknya 👑</span></div>
+        <div class="stat-row"><span>ROLE</span> <span style="color:#fff">RUSHER / CODER</span></div>
+    </div>
+  </div>
+
+  <p style="font-size: 12px;">
     > FULLSTACK DEVELOPER<br>
-    > CREATOR OF <b>Iin</b><br><br>
-    Suka ngulik coding dan bikin bot WhatsApp yang bermanfaat.
+    > CREATOR OF Iin<br>
   </p>
-  
+
   <div class="links">
-    <a href="https://wa.me/6283182014581" class="btn">> Execute: WhatsApp Me</a>
-    <a href="https://www.whatsapp.com/channel/0029Vb6hwWFhBFUxwg3m530c" target="_blank" class="btn">
-Execute: Saluran WA
-</a>
-  
-  <div class="spotify">
-    <iframe style="border-radius:12px"
-    src="https://open.spotify.com/embed/track/563SfWAHJs4FBZMkRN0IFN?si=i9WCciPIRc6ANo3NqfJf_A" 
-    width="100%" height="80"
-    frameBorder="0"
-    allowfullscreen=""
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-    </iframe>
+    <a href="https://wa.me/6283182014581" class="btn">> WHATSAPP OWNER</a>
+    <a href="https://whatsapp.com/channel/0029Vb6hwWfHbFUxwg3m530c" class="btn">> OFFICIAL CHANNEL</a>
+  </div>
+
+  <div class="spotify-box">
+    <iframe style="border-radius:12px" 
+    src="https://open.spotify.com/embed/track/466S89Y6pAL7X8Iu77T6S8?utm_source=generator&theme=0" 
+    width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
   </div>
 
 </div>
 
 <script>
-  // --- 1. MATRIX RAIN EFFECT LOGIC ---
+  // --- MATRIX RAIN LOGIC ---
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
-  
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  
-  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()_+-='.split('');
-  const fontSize = 14;
+  const chars = '01'.split('');
+  const fontSize = 15;
   const columns = canvas.width / fontSize;
-  const drops = [];
-  
-  for(let x = 0; x < columns; x++) {
-    drops[x] = 1;
-  }
-  
+  const drops = Array(Math.floor(columns)).fill(1);
+
   function drawMatrix() {
-    // Memberikan efek jejak (trail) yang perlahan menghilang
     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.fillStyle = '#0F0'; // Warna hijau neon
+    ctx.fillStyle = '#0F0';
     ctx.font = fontSize + 'px monospace';
-    
-    for(let i = 0; i < drops.length; i++) {
+    drops.forEach((y, i) => {
       const text = chars[Math.floor(Math.random() * chars.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      
-      // Reset drop ke atas secara acak setelah mencapai bawah
-      if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
+      ctx.fillText(text, i * fontSize, y * fontSize);
+      if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
       drops[i]++;
-    }
+    });
   }
-  
-  // Menjalankan animasi matrix
-  setInterval(drawMatrix, 35);
+  setInterval(drawMatrix, 40);
 
-  // Sesuaikan ukuran canvas jika layar di-resize
-  window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
-
-  // --- 2. LOADER & AUTOPLAY LOGIC ---
+  // --- LOADER LOGIC ---
   const enterBtn = document.getElementById('enter-btn');
   const loader = document.getElementById('loader');
   const card = document.getElementById('profile-card');
   const bgMusic = document.getElementById('bg-music');
 
   enterBtn.addEventListener('click', () => {
-    // Play musik (Tergantung device, bisa diblokir, tapi event klik ini me-bypass proteksi browser)
-    bgMusic.play().catch(err => console.log("Audio play failed:", err));
-    
-    // Animasi fade out loader
+    bgMusic.play();
     loader.style.opacity = '0';
-    
     setTimeout(() => {
-      loader.style.display = 'none'; // Hilangkan loader sepenuhnya
-      card.classList.add('show');    // Munculkan card profil
+      loader.style.display = 'none';
+      card.classList.add('show');
     }, 500);
   });
 </script>
