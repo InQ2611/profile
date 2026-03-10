@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>INQ Owner - System Access</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
 :root {
   --neon-blue: #00d4ff;
@@ -104,12 +106,16 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-blue); le
 
 .links { margin-top: 15px; }
 .btn {
-  display: block; text-decoration: none;
-  margin: 8px 0; padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  margin: 8px 0; padding: 10px 15px;
   border-radius: 5px; border: 1px solid var(--neon-blue);
   color: var(--neon-blue); font-size: 13px;
   font-weight: bold; transition: 0.3s;
 }
+.btn i { margin-right: 15px; width: 20px; text-align: center; font-size: 16px; }
 .btn:hover { background: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 15px var(--neon-blue); }
 
 .btn-special {
@@ -117,6 +123,11 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-blue); le
     border-style: double;
     border-width: 3px;
 }
+/* Ikon Colors */
+.fa-whatsapp { color: #25D366; }
+.fa-youtube { color: #FF0000; }
+.fa-tiktok { color: #fff; }
+.fa-spotify { color: #1DB954; }
 
 .spotify-box {
   margin-top: 20px; border-radius: 12px;
@@ -159,14 +170,30 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-blue); le
   </div>
 
   <div class="links">
-    <a href="https://wa.me/6283182014581" class="btn sfx-btn">> CONTACT OPERATOR</a>
-    <a href="#" class="btn btn-special" id="show-playlist">> KLIK INI UNTUK TAU PLAYLIST OWNER 😁</a>
-    <a href="https://whatsapp.com/channel/0029Vb6hwWfHbFUxwg3m530c" class="btn sfx-btn">> JOIN NETWORK</a>
+    <a href="https://wa.me/6283182014581" class="btn sfx-btn">
+        <i class="fab fa-whatsapp"></i> CONTACT OPERATOR
+    </a>
+
+    <a href="https://www.tiktok.com/@in_z26?_r=1&_t=ZS-94YisdVVJ0n" class="btn sfx-btn">
+        <i class="fab fa-tiktok"></i> TIKTOK PROFILE
+    </a>
+
+    <a href="https://youtube.com/@hxw7_0?si=hDaXPeJJCBntbfIw" class="btn sfx-btn">
+        <i class="fab fa-youtube"></i> YOUTUBE CHANNEL
+    </a>
+
+    <a href="#" class="btn btn-special" id="show-playlist">
+        <i class="fab fa-spotify"></i> OWNER PLAYLIST 😁
+    </a>
+
+    <a href="https://whatsapp.com/channel/0029Vb6hwWfHbFUxwg3m530c" class="btn sfx-btn">
+        <i class="fas fa-network-wired"></i> JOIN NETWORK
+    </a>
   </div>
 
   <div class="spotify-box" id="spotify-container">
     <iframe style="border-radius:12px" 
-    src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM3M" 
+    src="https://open.spotify.com/playlist/1uVPaLURgB6vKNvnDy7WIs?si=U8CE_iACT9GL6oNLffqUBA&pt=6e2c46d1577f21f6acf2ed17f2e755bb" 
     width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </div>
 </div>
@@ -215,16 +242,19 @@ h1 { margin: 10px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon-blue); le
     clickSfx.play();
     spotifyBox.style.display = (spotifyBox.style.display === 'block') ? 'none' : 'block';
     if(spotifyBox.style.display === 'block') {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        setTimeout(() => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }, 100);
     }
   });
 
   document.querySelectorAll('.sfx-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       clickSfx.play();
-      if(btn.href !== "#") {
+      if(btn.getAttribute('href') !== "#") {
           e.preventDefault(); 
-          setTimeout(() => { window.location.href = btn.href; }, 200);
+          const targetUrl = btn.href;
+          setTimeout(() => { window.location.href = targetUrl; }, 300);
       }
     });
   });
