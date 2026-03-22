@@ -4,7 +4,7 @@
 🚀 Lagi belajar Node.js & automation  
 
 ## 🔥 Project
-- 🤖 Bot WA Confess
+- 🤖 Bot WA 
 - ⚙️ Bot fitur group
 
 ## 📫 Kontak
