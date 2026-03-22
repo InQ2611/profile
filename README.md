@@ -1,4 +1,4 @@
-# 👋 Halo, aku Inq!
+# 👋 Halo, aku Xqin!
 
 💻 Developer bot WhatsApp  
 🚀 Lagi belajar Node.js & automation  
