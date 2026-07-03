@@ -11,7 +11,6 @@
   --neon-blue: #66CCFF;
   --dark-bg: #031321;
   --glow-blue: rgba(102, 204, 255, .45);
-}
             --sub-bg: rgba(0, 212, 255, 0.08);
         }
         
@@ -229,6 +228,50 @@
             display: none;
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
         }
+
+   .aurora {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -2;
+    overflow: hidden;
+}
+
+.aurora::before,
+.aurora::after{
+    content: "";
+    position: absolute;
+    width: 70vw;
+    height: 70vw;
+    border-radius: 50%;
+    filter: blur(90px);
+    animation: auroraMove 18s ease-in-out infinite alternate;
+}
+
+.aurora::before{
+    background: rgba(0,255,255,.22);
+    top: -20%;
+    left: -10%;
+}
+
+.aurora::after{
+    background: rgba(0,120,255,.18);
+    bottom: -25%;
+    right: -10%;
+    animation-duration: 22s;
+}
+
+@keyframes auroraMove{
+    0%{
+        transform: translate(0,0) scale(1);
+    }
+    50%{
+        transform: translate(120px,-80px) scale(1.2);
+    }
+    100%{
+        transform: translate(-80px,120px) scale(.9);
+    }
+}
     </style>
 </head>
 <body>
@@ -237,7 +280,7 @@
 <audio id="bg-music" loop><source src="https://files.catbox.moe/p9p663.mp3" type="audio/mpeg"></audio>
 
 <canvas id="matrix-canvas"></canvas>
-
+<div class="aurora"></div>
 <div id="loader">
     <div class="loader-text">INITIALIZING BLUE SYSTEM...</div>
     <button id="enter-btn">DECRYPT ACCESS</button>
@@ -271,8 +314,6 @@
         <a href="https://wa.me/6283182014581" class="btn sfx-btn">
             <i class="fab fa-whatsapp"></i> CONTACT OPERATOR
         </a>
-
-    <div class="links">
         <!-- Contact -->
         <a href="https://wa.me/6285136470911" class="btn sfx-btn">
             <i class="fab fa-whatsapp"></i> CONTACT BOT
