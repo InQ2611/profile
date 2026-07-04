@@ -1,11 +1,9 @@
 # 👋 Halo, aku Xqin!
 
 💻 Developer bot WhatsApp  
-🚀 Lagi belajar Node.js & automation  
+🚀 Lagi belajar JavaScript 
 
 ## 🔥 Project
 - 🤖 Bot WA 
-- ⚙️ Bot fitur group
-
 ## 📫 Kontak
-- WhatsApp / IG
+- WhatsApp 08318201 4 nya kapan kapan aja
