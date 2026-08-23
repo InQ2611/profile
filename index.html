@@ -3,462 +3,739 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Axion Owner - System Access</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <title>Xqin • Digital Space</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-  --neon-blue: #66CCFF;
-  --dark-bg: #031321;
-  --glow-blue: rgba(102, 204, 255, .45);
-            --sub-bg: rgba(0, 212, 255, 0.08);
-        }
-        
-        body {
+
+        * {
             margin: 0;
-            font-family: 'Share Tech Mono', monospace;
-            background: var(--dark-bg);
-            color: var(--neon-blue);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #050507;
+            --text: #ffffff;
+            --muted: #999999;
+        }
+
+        body {
             min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Orbitron', sans-serif;
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
 
-        #matrix-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-        }
+        /* =========================
+           RGB BACKGROUND
+        ========================= */
 
-        #loader {
+        .background {
             position: fixed;
             inset: 0;
-            background: var(--dark-bg);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            z-index: -10;
+            background:
+                radial-gradient(
+                    circle at 50% 20%,
+                    rgba(0, 255, 255, .08),
+                    transparent 35%
+                ),
+                #050507;
         }
 
-        .loader-text {
-            font-size: 24px;
-            margin-bottom: 25px;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px var(--neon-blue);
-            animation: blink 1.2s infinite alternate;
+        .orb {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: .45;
+            animation: float 10s infinite alternate ease-in-out;
         }
 
-        @keyframes blink { 0% { opacity: 1; } 100% { opacity: 0.2; } }
-
-        #enter-btn {
-            padding: 14px 28px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 16px;
-            color: var(--neon-blue);
-            background: transparent;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-blue) inset;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            letter-spacing: 1px;
+        .orb.one {
+            background: #00ffff;
+            top: -120px;
+            left: -100px;
         }
 
-        #enter-btn:hover { 
-            background: var(--neon-blue); 
-            color: var(--dark-bg); 
-            box-shadow: 0 0 25px var(--neon-blue), inset 0 0 10px rgba(0,0,0,0.5); 
-            text-shadow: none;
+        .orb.two {
+            background: #ff00ff;
+            right: -120px;
+            top: 30%;
+            animation-delay: 2s;
         }
 
-        /* CARD PROFILE */
-        .card {
-            background: rgba(2, 11, 18, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 30px 25px;
-            border-radius: 16px;
+        .orb.three {
+            background: #004cff;
+            bottom: -150px;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(100px, -70px) scale(1.2);
+            }
+
+            100% {
+                transform: translate(-80px, 100px) scale(.9);
+            }
+
+        }
+
+        /* =========================
+           RGB LINES
+        ========================= */
+
+        .rgb-line {
+            position: fixed;
+            width: 100%;
+            height: 2px;
+
+            background: linear-gradient(
+                90deg,
+                transparent,
+                #ff0055,
+                #00ffff,
+                #7a00ff,
+                transparent
+            );
+
+            filter: blur(1px);
+            opacity: .7;
+
+            animation: scan 5s linear infinite;
+
+            z-index: -2;
+        }
+
+        @keyframes scan {
+
+            0% {
+                top: -5%;
+            }
+
+            100% {
+                top: 105%;
+            }
+
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            padding: 40px 20px 60px;
+        }
+
+        /* =========================
+           PROFILE
+        ========================= */
+
+        .profile {
             text-align: center;
-            border: 1px solid rgba(0, 212, 255, 0.6);
-            box-shadow: 0 0 30px var(--glow-blue), inset 0 0 20px rgba(0, 212, 255, 0.15);
-            max-width: 380px; 
-            width: 90%;
-            opacity: 0; 
-            transform: translateY(40px);
-            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-            margin: 20px 0;
+            margin-bottom: 30px;
+            animation: appear 1s ease forwards;
         }
 
-        .card.show { opacity: 1; transform: translateY(0); }
+        @keyframes appear {
 
-        .profile-container {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        .profile-ring {
             position: relative;
-            width: 115px;
-            height: 115px;
-            margin: 0 auto 15px;
+            width: 125px;
+            height: 125px;
+            margin: auto;
+            padding: 4px;
+            border-radius: 50%;
+
+            background: conic-gradient(
+                #ff0055,
+                #ff00ff,
+                #004cff,
+                #00ffff,
+                #00ff66,
+                #ffff00,
+                #ff0055
+            );
+
+            animation: rotateRGB 4s linear infinite;
+
+            box-shadow:
+                0 0 15px #00ffff,
+                0 0 35px rgba(255, 0, 255, .4);
         }
 
-        .card img.profile-pic {
+        @keyframes rotateRGB {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+        .profile-ring img {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-blue);
             object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #050507;
+
+            transform: rotate(0deg);
         }
 
-        h1 { 
-            margin: 10px 0; 
-            font-size: 24px; 
-            text-shadow: 0 0 12px var(--neon-blue); 
-            letter-spacing: 3px; 
+        .profile h1 {
+            margin-top: 18px;
+            font-size: 28px;
+            letter-spacing: 4px;
+
+            text-shadow:
+                0 0 8px #00ffff,
+                0 0 20px #ff00ff;
+
+            animation: textRGB 4s infinite linear;
         }
 
-        /* BOX STYLE */
-        .box {
-            background: rgba(0, 212, 255, 0.03);
-            border: 1px dashed rgba(0, 212, 255, 0.5);
-            border-radius: 10px;
-            padding: 15px; 
-            margin: 18px 0;
-            text-align: left;
-            transition: all 0.3s;
-        }
-        
-        .box:hover {
-            border-color: var(--neon-blue);
-            background: rgba(0, 212, 255, 0.05);
-            box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
-        }
+        @keyframes textRGB {
 
-        .box-title {
-            font-size: 11px; 
-            color: var(--dark-bg);
-            background: var(--neon-blue);
-            padding: 3px 10px; 
-            display: inline-block;
-            margin-bottom: 12px; 
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            0% {
+                text-shadow: 0 0 10px #00ffff;
+            }
+
+            33% {
+                text-shadow: 0 0 15px #ff00ff;
+            }
+
+            66% {
+                text-shadow: 0 0 15px #0066ff;
+            }
+
+            100% {
+                text-shadow: 0 0 10px #00ffff;
+            }
+
         }
 
-        .stats-text { font-size: 13px; display: flex; flex-direction: column; gap: 7px; }
-        .stat-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0, 212, 255, 0.08); padding-bottom: 3px; }
-        .about-content { font-size: 12.5px; line-height: 1.6; color: #e0e0e0; text-align: justify; }
+        .username {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
 
-        /* LINKS & BUTTONS */
-        .links { margin-top: 15px; }
-        
-        .btn {
-            display: flex;
+        .status {
+            display: inline-flex;
             align-items: center;
-            justify-content: flex-start;
-            text-decoration: none;
-            margin: 10px 0; 
-            padding: 12px 15px;
-            border-radius: 8px; 
-            border: 1px solid rgba(0, 212, 255, 0.5);
-            color: var(--neon-blue); 
-            font-size: 13.5px;
-            font-weight: bold; 
-            transition: all 0.3s ease;
-            background: rgba(2, 11, 18, 0.6);
-            cursor: pointer;
-            box-sizing: border-box;
-            width: 100%;
+            gap: 7px;
+
+            margin-top: 15px;
+            padding: 7px 13px;
+
+            border: 1px solid rgba(0, 255, 255, .4);
+            border-radius: 30px;
+
+            background: rgba(0, 255, 255, .05);
+
+            font-size: 10px;
+            color: #00ffff;
         }
 
-        .btn i { margin-right: 15px; width: 20px; text-align: center; font-size: 16px; }
-        .btn:hover { background: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 18px var(--neon-blue); border-color: var(--neon-blue); }
-        
-        .btn-special {
-            background: rgba(0, 212, 255, 0.06);
-            border-style: double;
-            border-width: 3px;
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #00ff66;
+            box-shadow: 0 0 10px #00ff66;
+
+            animation: blink 1s infinite alternate;
         }
 
-        /* MULTI TIKTOK MENU */
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        @keyframes blink {
+
+            from {
+                opacity: .3;
+            }
+
+            to {
+                opacity: 1;
+            }
+
+        }
+
+        /* =========================
+           BIO CARD
+        ========================= */
+
+        .bio-card {
+            position: relative;
+
+            padding: 20px;
+            margin-bottom: 22px;
+
+            border-radius: 18px;
+
+            background: rgba(10, 10, 15, .75);
+
+            backdrop-filter: blur(15px);
+
+            border: 1px solid transparent;
+
+            background-clip: padding-box;
+
+            text-align: center;
+
+            box-shadow:
+                0 0 25px rgba(0, 255, 255, .08),
+                inset 0 0 20px rgba(255, 0, 255, .04);
+        }
+
+        .bio-card::before {
+
+            content: "";
+
+            position: absolute;
+            inset: -1px;
+
+            border-radius: 18px;
+
+            padding: 1px;
+
+            background: linear-gradient(
+                90deg,
+                #00ffff,
+                #0066ff,
+                #ff00ff,
+                #ff0055,
+                #00ffff
+            );
+
+            background-size: 300% 100%;
+
+            animation: borderRGB 5s linear infinite;
+
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+
+            pointer-events: none;
+        }
+
+        @keyframes borderRGB {
+
+            0% {
+                background-position: 0%;
+            }
+
+            100% {
+                background-position: 300%;
+            }
+
+        }
+
+        .bio-card p {
+            color: #c7c7c7;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           MENU
+        ========================= */
+
+        .menu {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            padding-left: 15px;
-            border-left: 1px dashed rgba(0, 212, 255, 0.3);
-            margin-left: 10px;
-        }
-        
-        .submenu.open {
-            max-height: 200px; /* Menampung 3 akun */
-            margin-bottom: 10px;
-            margin-top: -5px;
+            gap: 12px;
         }
 
-        .btn-sub {
-            padding: 9px 12px;
+        .menu-btn {
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+            min-height: 58px;
+
+            padding: 0 18px;
+
+            border-radius: 14px;
+
+            text-decoration: none;
+
+            color: white;
+
+            background: rgba(10, 10, 15, .75);
+
+            border: 1px solid rgba(255,255,255,.12);
+
+            backdrop-filter: blur(10px);
+
+            overflow: hidden;
+
+            transition: .3s ease;
+        }
+
+        .menu-btn::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 3px;
+            height: 100%;
+
+            background: linear-gradient(
+                #00ffff,
+                #ff00ff,
+                #ff0055
+            );
+
+            box-shadow:
+                0 0 10px #00ffff;
+
+            transition: .3s;
+        }
+
+        .menu-btn:hover {
+
+            transform: translateY(-3px) scale(1.01);
+
+            border-color: rgba(0,255,255,.5);
+
+            box-shadow:
+                0 0 20px rgba(0,255,255,.12);
+        }
+
+        .menu-btn:active {
+
+            transform: scale(.97);
+
+        }
+
+        .icon {
+
+            width: 35px;
+
+            font-size: 20px;
+
+            color: #00ffff;
+
+            text-shadow:
+                0 0 10px #00ffff;
+
+        }
+
+        .menu-text {
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 3px;
+
+        }
+
+        .menu-title {
+
             font-size: 12px;
-            background: var(--sub-bg);
-            border-color: rgba(0, 212, 255, 0.3);
-            margin: 3px 0;
+            letter-spacing: 1px;
+
         }
 
-        /* Icon Colors Default */
-        .fa-whatsapp { color: #25D366; transition: color 0.3s; }
-        .fa-youtube { color: #FF0000; transition: color 0.3s; }
-        .fa-tiktok { color: #fff; transition: color 0.3s; }
-        .fa-spotify { color: #1DB954; transition: color 0.3s; }
-        
-        /* Reset icon color on hover so it follows parent style */
-        .btn:hover i { color: inherit !important; }
+        .menu-desc {
 
-        .spotify-box {
-            margin-top: 20px; 
-            border-radius: 12px;
-            overflow: hidden; 
-            border: 1px solid var(--neon-blue); 
-            background: #000;
-            display: none;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            font-family: Arial, sans-serif;
+
+            font-size: 10px;
+
+            color: #777;
+
         }
 
-   .aurora {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -2;
-    overflow: hidden;
-}
+        .arrow {
 
-.aurora::before,
-.aurora::after{
-    content: "";
-    position: absolute;
-    width: 70vw;
-    height: 70vw;
-    border-radius: 50%;
-    filter: blur(90px);
-    animation: auroraMove 18s ease-in-out infinite alternate;
-}
+            margin-left: auto;
 
-.aurora::before{
-    background: rgba(0,255,255,.22);
-    top: -20%;
-    left: -10%;
-}
+            color: #555;
 
-.aurora::after{
-    background: rgba(0,120,255,.18);
-    bottom: -25%;
-    right: -10%;
-    animation-duration: 22s;
-}
+            font-size: 12px;
 
-@keyframes auroraMove{
-    0%{
-        transform: translate(0,0) scale(1);
-    }
-    50%{
-        transform: translate(120px,-80px) scale(1.2);
-    }
-    100%{
-        transform: translate(-80px,120px) scale(.9);
-    }
-}
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            margin-top: 35px;
+
+            text-align: center;
+
+            color: #555;
+
+            font-size: 9px;
+
+            letter-spacing: 2px;
+
+        }
+
+        .rgb-text {
+
+            animation: footerRGB 4s infinite linear;
+
+        }
+
+        @keyframes footerRGB {
+
+            0% {
+                color: #00ffff;
+            }
+
+            33% {
+                color: #ff00ff;
+            }
+
+            66% {
+                color: #0066ff;
+            }
+
+            100% {
+                color: #00ffff;
+            }
+
+        }
+
     </style>
 </head>
+
 <body>
 
-<div id="loader">
-    <div class="loader-text">INITIALIZING BLUE SYSTEM...</div>
-    <button id="enter-btn">DECRYPT ACCESS</button>
-</div>
+    <div class="background">
 
-<div class="card" id="profile-card">
-    <div class="profile-container">
-        <img src="https://files.catbox.moe/02whrs.png" alt="Owner" class="profile-pic">
-    </div>
-    <h1>Xqin OWNER</h1>
+        <div class="orb one"></div>
+        <div class="orb two"></div>
+        <div class="orb three"></div>
 
-    <div class="box">
-        <div class="box-title">PLAYER IDENTIFICATION: FF</div>
-        <div class="stats-text">
-            <div class="stat-row"><span>NICKNAME</span> <span style="color:#fff">Xqinn</span></div>
-            <div class="stat-row"><span>USER ID</span> <span style="color:#fff">4380079874</span></div>
-            <div class="stat-row"><span>RANK</span> <span style="color:var(--neon-blue)">adalah pokoknya 👑</span></div>
-            <div class="stat-row"><span>ROLE</span> <span style="color:#fff">RUSHER</span></div>
-        </div>
     </div>
 
-    <div class="box">
-        <div class="box-title">ABOUT OWNER</div>
-        <div class="about-content">
-            Seorang pelajar dan pengembang bot WhatsApp yang fokus pada JavaScript. Suka bereksperimen dengan kode, seni visual, dan teknologi web. Sedang membangun ekosistem Xqin AI untuk masa depan. Silahkan klik menu di bawah untuk informasi selengkapnya.
-        </div>
-    </div>
+    <div class="rgb-line"></div>
 
-    <div class="links">
-        <!-- Contact -->
-        <a href="https://wa.me/6283182014581" class="btn sfx-btn">
-            <i class="fab fa-whatsapp"></i> CONTACT OPERATOR
-        </a>
-        <!-- Contact -->
-        <a href="https://wa.me/6285136470911" class="btn sfx-btn">
-            <i class="fab fa-whatsapp"></i> CONTACT BOT
-        </a>
 
-        <!-- TikTok Multi-Account Toggle Trigger -->
-        <button class="btn" id="tiktok-toggle">
-            <i class="fab fa-tiktok"></i> TIKTOK PROFILES <i class="fas fa-chevron-down" style="margin-left: auto; font-size: 11px; width: auto;"></i>
-        </button>
-        <!-- TikTok Submenu List -->
-        <div class="submenu" id="tiktok-submenu">
-            <a href="https://www.tiktok.com/@in_z26?_r=1&_t=ZS-94YisdVVJ0n" class="btn btn-sub sfx-btn">
-                <i class="fab fa-tiktok"></i> Main Account (@in_z26)
+    <main>
+
+        <!-- PROFILE -->
+
+        <section class="profile">
+
+            <div class="profile-ring">
+
+                <img
+                    src="https://files.catbox.moe/02whrs.png"
+                    alt="Xqin"
+                >
+
+            </div>
+
+            <h1>XQIN</h1>
+
+            <div class="username">
+                @xqin • DIGITAL CREATOR
+            </div>
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                SYSTEM ONLINE
+
+            </div>
+
+        </section>
+
+
+        <!-- BIO -->
+
+        <section class="bio-card">
+
+            <p>
+                Welcome to my digital space.
+                Developer, bot creator, editor,
+                and someone who apparently enjoys
+                making websites glow for no reason.
+            </p>
+
+        </section>
+
+
+        <!-- MENU -->
+
+        <section class="menu">
+
+            <a href="#" class="menu-btn">
+
+                <div class="icon">⌁</div>
+
+                <div class="menu-text">
+
+                    <span class="menu-title">
+                        WHATSAPP BOT
+                    </span>
+
+                    <span class="menu-desc">
+                        Access Xqin Bot
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
             </a>
-            <a href="https://www.tiktok.com/@in7_art?_r=1&_t=ZS-97iUFNzFpfZ" class="btn btn-sub sfx-btn">
-                <i class="fab fa-tiktok"></i> Second  Account (@in7_art)
+
+
+            <a href="#" class="menu-btn">
+
+                <div class="icon">◈</div>
+
+                <div class="menu-text">
+
+                    <span class="menu-title">
+                        DOWNLOADER
+                    </span>
+
+                    <span class="menu-desc">
+                        Video & audio tools
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
             </a>
-            <a href="https://www.tiktok.com/@przet_?_r=1&_t=ZS-97iUHkRxyaK" class="btn btn-sub sfx-btn">
-                <i class="fab fa-tiktok"></i> Third Account (@przet_)
+
+
+            <a href="#" class="menu-btn">
+
+                <div class="icon">◎</div>
+
+                <div class="menu-text">
+
+                    <span class="menu-title">
+                        TIKTOK
+                    </span>
+
+                    <span class="menu-desc">
+                        Follow my TikTok
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
             </a>
-        </div>
 
-        <!-- YouTube -->
-        <a href="https://youtube.com/@hxw7_0?si=hDaXPeJJCBntbfIw" class="btn sfx-btn">
-            <i class="fab fa-youtube"></i> YOUTUBE CHANNEL
-        </a>
 
-        <!-- Spotify Toggle -->
-        <button class="btn btn-special" id="show-playlist">
-            <i class="fab fa-spotify"></i> OWNER PLAYLIST 😁
-        </button>
+            <a href="#" class="menu-btn">
 
-        <!-- Network -->
-        <a href="https://whatsapp.com/channel/0029Vb6hwWfHbFUxwg3m530c" class="btn sfx-btn">
-            <i class="fas fa-network-wired"></i> JOIN NETWORK
-        </a>
-    </div>
+                <div class="icon">▶</div>
 
-    <!-- Spotify Container -->
-    <div class="spotify-box" id="spotify-container">
-        <iframe style="border-radius:12px" 
-        src="https://open.spotify.com/playlist/1uVPaLURgB6vKNvnDy7WIs?si=U8CE_iACT9GL6oNLffqUBA&pt=6e2c46d1577f21f6acf2ed17f2e755bb" 
-        width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-</div>
+                <div class="menu-text">
 
-<script>
-    // Matrix Effect Blue 
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-    
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+                    <span class="menu-title">
+                        YOUTUBE
+                    </span>
 
-    const chars = '01011010'.split('');
-    const fontSize = 14;
-    let columns = canvas.width / fontSize;
-    let drops = Array(Math.floor(columns)).fill(1);
+                    <span class="menu-desc">
+                        Watch my content
+                    </span>
 
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(2, 11, 18, 0.15)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'rgba(0, 212, 255, 0.8)';
-        ctx.font = fontSize + 'px monospace';
-        
-        drops.forEach((y, i) => {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(text, i * fontSize, y * fontSize);
-            if (y * fontSize > canvas.height && Math.random() > 0.98) drops[i] = 0;
-            drops[i]++;
-        });
-    }
-    setInterval(drawMatrix, 35);
+                </div>
 
-    // UI Elements Logic
-    const enterBtn = document.getElementById('enter-btn');
-    const loader = document.getElementById('loader');
-    const card = document.getElementById('profile-card');
-    const bgMusic = document.getElementById('bg-music');
-    const clickSfx = document.getElementById('click-sfx');
-    
-    const tiktokToggle = document.getElementById('tiktok-toggle');
-    const tiktokSubmenu = document.getElementById('tiktok-submenu');
-    const playlistBtn = document.getElementById('show-playlist');
-    const spotifyBox = document.getElementById('spotify-container');
+                <span class="arrow">
+                    →
+                </span>
 
-    // Access System Unlock
-    enterBtn.addEventListener('click', () => {
-        clickSfx.currentTime = 0;
-        clickSfx.play();
-        bgMusic.play().catch(() => {});
-        loader.style.opacity = '0';
-        setTimeout(() => { 
-            loader.style.display = 'none'; 
-            card.classList.add('show'); 
-        }, 600);
-    });
+            </a>
 
-    // Multi-Account TikTok Dropdown Toggle
-    tiktokToggle.addEventListener('click', () => {
-        clickSfx.currentTime = 0;
-        clickSfx.play();
-        tiktokSubmenu.classList.toggle('open');
-        const arrow = tiktokToggle.querySelector('.fa-chevron-down');
-        if(tiktokSubmenu.classList.contains('open')) {
-            arrow.style.transform = 'rotate(180deg)';
-        } else {
-            arrow.style.transform = 'rotate(0deg)';
-        }
-    });
 
-    // Spotify Toggle
-    playlistBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        clickSfx.currentTime = 0;
-        clickSfx.play();
-        
-        const isDisplayed = spotifyBox.style.display === 'block';
-        spotifyBox.style.display = isDisplayed ? 'none' : 'block';
-        
-        if(!isDisplayed) {
-            setTimeout(() => {
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }, 150);
-        }
-    });
+            <a href="#" class="menu-btn">
 
-    // Handle standard button redirects with sfx delay
-    document.querySelectorAll('.sfx-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const targetUrl = btn.getAttribute('href');
-            if(targetUrl && targetUrl !== "#") {
-                e.preventDefault(); 
-                clickSfx.currentTime = 0;
-                clickSfx.play();
-                setTimeout(() => { window.open(targetUrl, '_blank'); }, 250);
-            }
-        });
-    });
-function toggleMenu(){
+                <div class="icon">♫</div>
 
-document
-.querySelector(".sidebar")
-.classList.toggle("active");
+                <div class="menu-text">
 
-}
-</script>
+                    <span class="menu-title">
+                        MY PLAYLIST
+                    </span>
+
+                    <span class="menu-desc">
+                        Music that I listen to
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </a>
+
+        </section>
+
+
+        <footer>
+
+            <span class="rgb-text">
+                XQIN DIGITAL SYSTEM
+            </span>
+
+            <br><br>
+
+            © 2026 • ALL SYSTEMS ONLINE
+
+        </footer>
+
+    </main>
+
 </body>
 </html>
