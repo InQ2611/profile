@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Xqin Bot</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cyan: #00ffff;
+            --blue: #0066ff;
+            --purple: #9900ff;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -5;
+        }
+
+        .background::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    rgba(255,255,255,.015) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,.015) 1px,
+                    transparent 1px
+                );
+
+            background-size: 40px 40px;
+        }
+
+        .orb {
+            position: absolute;
+
+            width: 330px;
+            height: 330px;
+
+            border-radius: 50%;
+
+            filter: blur(100px);
+            opacity: .35;
+
+            animation:
+                floating 12s infinite alternate ease-in-out;
+        }
+
+        .orb.one {
+            background: var(--cyan);
+            top: -150px;
+            left: -120px;
+        }
+
+        .orb.two {
+            background: var(--pink);
+            right: -150px;
+            top: 35%;
+            animation-delay: 2s;
+        }
+
+        .orb.three {
+            background: var(--blue);
+            bottom: -150px;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        @keyframes floating {
+
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(100px, -80px) scale(1.2);
+            }
+
+            100% {
+                transform: translate(-80px, 100px) scale(.9);
+            }
+
+        }
+
+        /* CONTAINER */
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+
+            margin: auto;
+
+            padding: 25px 18px 50px;
+        }
+
+        /* HEADER */
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            margin-bottom: 30px;
+        }
+
+        .back {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            color: var(--cyan);
+
+            border: 1px solid rgba(0,255,255,.3);
+
+            background: rgba(0,255,255,.04);
+
+            text-decoration: none;
+
+            font-size: 18px;
+
+            transition: .3s;
+        }
+
+        .back:hover {
+            background: var(--cyan);
+            color: black;
+
+            box-shadow:
+                0 0 20px var(--cyan);
+        }
+
+        .header-text h1 {
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .header-text p {
+            margin-top: 5px;
+
+            color: #666;
+
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+        }
+
+        /* BOT HERO */
+
+        .hero {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .bot-core {
+
+            width: 105px;
+            height: 105px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 2px solid var(--cyan);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0,255,255,.15),
+                    rgba(0,0,0,.7)
+                );
+
+            box-shadow:
+                0 0 15px var(--cyan),
+                0 0 40px rgba(0,255,255,.25);
+
+            animation:
+                coreRGB 5s infinite linear;
+        }
+
+        .bot-core span {
+            font-size: 16px;
+            letter-spacing: 3px;
+        }
+
+        @keyframes coreRGB {
+
+            0% {
+                border-color: var(--cyan);
+                box-shadow:
+                    0 0 15px var(--cyan),
+                    0 0 40px rgba(0,255,255,.25);
+            }
+
+            33% {
+                border-color: var(--blue);
+                box-shadow:
+                    0 0 15px var(--blue),
+                    0 0 40px rgba(0,102,255,.25);
+            }
+
+            66% {
+                border-color: var(--pink);
+                box-shadow:
+                    0 0 15px var(--pink),
+                    0 0 40px rgba(255,0,255,.25);
+            }
+
+            100% {
+                border-color: var(--cyan);
+                box-shadow:
+                    0 0 15px var(--cyan),
+                    0 0 40px rgba(0,255,255,.25);
+            }
+
+        }
+
+        .hero h2 {
+            font-size: 25px;
+            letter-spacing: 3px;
+
+            text-shadow:
+                0 0 15px var(--cyan);
+        }
+
+        .hero p {
+            margin-top: 10px;
+
+            color: #777;
+
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        /* STATUS */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-top: 15px;
+
+            padding: 7px 13px;
+
+            border-radius: 30px;
+
+            border:
+                1px solid rgba(0,255,100,.3);
+
+            background:
+                rgba(0,255,100,.04);
+
+            color: #00ff88;
+
+            font-size: 9px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00ff88;
+
+            box-shadow:
+                0 0 10px #00ff88;
+
+            animation:
+                blink 1s infinite alternate;
+        }
+
+        @keyframes blink {
+
+            from {
+                opacity: .3;
+            }
+
+            to {
+                opacity: 1;
+            }
+
+        }
+
+        /* CARD */
+
+        .card {
+
+            position: relative;
+
+            padding: 20px;
+
+            margin-top: 25px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(8,8,12,.78);
+
+            backdrop-filter: blur(15px);
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            box-shadow:
+                0 0 30px rgba(0,255,255,.05);
+        }
+
+        .card-title {
+
+            font-size: 11px;
+
+            color: var(--cyan);
+
+            letter-spacing: 2px;
+
+            margin-bottom: 15px;
+        }
+
+        /* BOT INFO */
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+        }
+
+        .info-box {
+
+            padding: 14px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            border:
+                1px solid rgba(255,255,255,.07);
+        }
+
+        .info-box span {
+
+            display: block;
+
+            color: #555;
+
+            font-size: 8px;
+
+            margin-bottom: 7px;
+        }
+
+        .info-box strong {
+
+            font-size: 11px;
+
+            color: #ddd;
+        }
+
+        /* MENU */
+
+        .menu {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .menu-btn {
+
+            width: 100%;
+
+            min-height: 54px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 12px 15px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            color: white;
+
+            text-decoration: none;
+
+            transition: .3s;
+        }
+
+        .menu-btn:hover {
+
+            transform: translateX(4px);
+
+            border-color:
+                rgba(0,255,255,.5);
+
+            background:
+                rgba(0,255,255,.04);
+
+            box-shadow:
+                0 0 18px rgba(0,255,255,.08);
+        }
+
+        .menu-icon {
+
+            width: 30px;
+
+            text-align: center;
+
+            color: var(--cyan);
+
+            font-size: 14px;
+        }
+
+        .menu-content {
+
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .menu-title {
+
+            font-size: 10px;
+
+            letter-spacing: 1px;
+        }
+
+        .menu-desc {
+
+            color: #666;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 10px;
+        }
+
+        .arrow {
+
+            margin-left: auto;
+
+            color: #555;
+        }
+
+        /* FOOTER */
+
+        footer {
+
+            margin-top: 30px;
+
+            text-align: center;
+
+            color: #444;
+
+            font-size: 8px;
+
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 480px) {
+
+            .container {
+                padding:
+                    22px 15px 45px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="background">
+
+        <div class="orb one"></div>
+        <div class="orb two"></div>
+        <div class="orb three"></div>
+
+    </div>
+
+
+    <div class="container">
+
+        <header class="header">
+
+            <a href="index.html" class="back">
+                ←
+            </a>
+
+            <div class="header-text">
+
+                <h1>XQIN BOT</h1>
+
+                <p>
+                    WHATSAPP AUTOMATION SYSTEM
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <section class="hero">
+
+            <div class="bot-core">
+                <span>BOT</span>
+            </div>
+
+            <h2>XQIN BOT</h2>
+
+            <p>
+                WhatsApp automation system
+            </p>
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                SYSTEM ONLINE
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <div class="card-title">
+                SYSTEM INFORMATION
+            </div>
+
+            <div class="info-grid">
+
+                <div class="info-box">
+
+                    <span>STATUS</span>
+
+                    <strong>ONLINE</strong>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span>VERSION</span>
+
+                    <strong>1.0.0</strong>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span>PLATFORM</span>
+
+                    <strong>WHATSAPP</strong>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span>ENGINE</span>
+
+                    <strong>NODE.JS</strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="menu">
+
+                <a
+                    href="#"
+                    class="menu-btn"
+                >
+
+                    <div class="menu-icon">
+                        +
+                    </div>
+
+                    <div class="menu-content">
+
+                        <span class="menu-title">
+                            BOT COMMANDS
+                        </span>
+
+                        <span class="menu-desc">
+                            View available commands
+                        </span>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="menu-btn"
+                >
+
+                    <div class="menu-icon">
+                        /
+                    </div>
+
+                    <div class="menu-content">
+
+                        <span class="menu-title">
+                            BOT FEATURES
+                        </span>
+
+                        <span class="menu-desc">
+                            Explore system features
+                        </span>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="menu-btn"
+                >
+
+                    <div class="menu-icon">
+                        #
+                    </div>
+
+                    <div class="menu-content">
+
+                        <span class="menu-title">
+                            CONTACT BOT
+                        </span>
+
+                        <span class="menu-desc">
+                            Open WhatsApp
+                        </span>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            XQIN DIGITAL SYSTEM
+
+            <br><br>
+
+            © 2026
+
+        </footer>
+
+    </div>
+
+</body>
+</html>
