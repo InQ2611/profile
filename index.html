@@ -738,4 +738,219 @@
     </main>
 
 </body>
+<script>
+    /* =========================
+       PAGE LOAD
+    ========================= */
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        document.body.classList.add("loaded");
+
+    });
+
+
+    /* =========================
+       RGB CLICK EFFECT
+    ========================= */
+
+    document.querySelectorAll(".menu-btn").forEach(button => {
+
+        button.addEventListener("click", function(e) {
+
+            if (this.getAttribute("href") === "#") {
+                e.preventDefault();
+            }
+
+            const ripple = document.createElement("span");
+
+            ripple.style.position = "absolute";
+            ripple.style.width = "10px";
+            ripple.style.height = "10px";
+            ripple.style.borderRadius = "50%";
+            ripple.style.pointerEvents = "none";
+
+            ripple.style.left =
+                e.offsetX + "px";
+
+            ripple.style.top =
+                e.offsetY + "px";
+
+            ripple.style.background =
+                "rgba(0,255,255,.8)";
+
+            ripple.style.boxShadow =
+                "0 0 20px #00ffff, 0 0 40px #ff00ff";
+
+            ripple.style.transform =
+                "translate(-50%, -50%)";
+
+            ripple.style.animation =
+                "ripple .7s ease-out forwards";
+
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 700);
+
+        });
+
+    });
+
+
+    /* =========================
+       MOUSE RGB LIGHT
+    ========================= */
+
+    const light = document.createElement("div");
+
+    light.style.position = "fixed";
+    light.style.width = "180px";
+    light.style.height = "180px";
+    light.style.borderRadius = "50%";
+    light.style.pointerEvents = "none";
+    light.style.zIndex = "-1";
+
+    light.style.background =
+        "radial-gradient(circle, rgba(0,255,255,.12), transparent 70%)";
+
+    light.style.transform =
+        "translate(-50%, -50%)";
+
+    document.body.appendChild(light);
+
+
+    document.addEventListener("mousemove", e => {
+
+        light.style.left = e.clientX + "px";
+        light.style.top = e.clientY + "px";
+
+    });
+
+
+    /* =========================
+       RANDOM RGB GLOW
+    ========================= */
+
+    const colors = [
+        "#00ffff",
+        "#0066ff",
+        "#ff00ff",
+        "#ff0055"
+    ];
+
+    let colorIndex = 0;
+
+    setInterval(() => {
+
+        colorIndex++;
+
+        if (colorIndex >= colors.length) {
+            colorIndex = 0;
+        }
+
+        document.documentElement.style.setProperty(
+            "--rgb-color",
+            colors[colorIndex]
+        );
+
+    }, 1500);
+
+</script>
+
+
+<style>
+
+    /* =========================
+       RIPPLE
+    ========================= */
+
+    @keyframes ripple {
+
+        0% {
+            width: 10px;
+            height: 10px;
+            opacity: 1;
+        }
+
+        100% {
+            width: 500px;
+            height: 500px;
+            opacity: 0;
+        }
+
+    }
+
+
+    /* =========================
+       PAGE ENTRY
+    ========================= */
+
+    body {
+        opacity: 0;
+        transition: opacity 1s ease;
+    }
+
+    body.loaded {
+        opacity: 1;
+    }
+
+
+    /* =========================
+       RGB VARIABLE
+    ========================= */
+
+    :root {
+        --rgb-color: #00ffff;
+    }
+
+
+    .menu-btn:hover::before {
+
+        background:
+            linear-gradient(
+                180deg,
+                var(--rgb-color),
+                #ff00ff,
+                #00ffff
+            );
+
+        box-shadow:
+            0 0 15px var(--rgb-color);
+
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 480px) {
+
+        main {
+            padding:
+                30px 15px 50px;
+        }
+
+        .profile-ring {
+            width: 110px;
+            height: 110px;
+        }
+
+        .profile h1 {
+            font-size: 24px;
+        }
+
+        .bio-card {
+            padding: 17px;
+        }
+
+        .menu-btn {
+            min-height: 55px;
+        }
+
+    }
+
+</style>
 </html>
