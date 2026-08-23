@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Xqin Downloader</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cyan: #00ffff;
+            --blue: #0066ff;
+            --pink: #ff00ff;
+            --red: #ff0055;
+            --bg: #050507;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* =====================
+           BACKGROUND
+        ===================== */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -5;
+        }
+
+        .background::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    rgba(255,255,255,.015) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,.015) 1px,
+                    transparent 1px
+                );
+
+            background-size: 40px 40px;
+        }
+
+        .orb {
+            position: absolute;
+
+            width: 330px;
+            height: 330px;
+
+            border-radius: 50%;
+
+            filter: blur(100px);
+
+            opacity: .35;
+
+            animation:
+                floating 12s infinite alternate ease-in-out;
+        }
+
+        .orb:nth-child(1) {
+            background: var(--cyan);
+            top: -150px;
+            left: -120px;
+        }
+
+        .orb:nth-child(2) {
+            background: var(--pink);
+            right: -150px;
+            top: 35%;
+
+            animation-delay: 2s;
+        }
+
+        .orb:nth-child(3) {
+            background: var(--blue);
+            bottom: -150px;
+            left: 30%;
+
+            animation-delay: 4s;
+        }
+
+        @keyframes floating {
+
+            0% {
+                transform: translate(0,0) scale(1);
+            }
+
+            50% {
+                transform: translate(100px,-80px) scale(1.2);
+            }
+
+            100% {
+                transform: translate(-80px,100px) scale(.9);
+            }
+
+        }
+
+        /* =====================
+           CONTAINER
+        ===================== */
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+
+            margin: auto;
+
+            padding: 25px 18px 50px;
+        }
+
+        /* =====================
+           HEADER
+        ===================== */
+
+        .header {
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 30px;
+        }
+
+        .back {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            color: var(--cyan);
+
+            border: 1px solid rgba(0,255,255,.3);
+
+            background: rgba(0,255,255,.04);
+
+            text-decoration: none;
+
+            font-size: 18px;
+
+            transition: .3s;
+        }
+
+        .back:hover {
+            background: var(--cyan);
+            color: black;
+
+            box-shadow:
+                0 0 20px var(--cyan);
+        }
+
+        .header-text h1 {
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .header-text p {
+            margin-top: 5px;
+
+            color: #666;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+        }
+
+        /* =====================
+           TITLE
+        ===================== */
+
+        .hero {
+            text-align: center;
+
+            margin-bottom: 25px;
+        }
+
+        .hero-icon {
+            font-size: 45px;
+
+            margin-bottom: 12px;
+
+            animation:
+                iconRGB 4s infinite linear;
+
+            text-shadow:
+                0 0 15px var(--cyan);
+        }
+
+        @keyframes iconRGB {
+
+            0% {
+                color: var(--cyan);
+            }
+
+            25% {
+                color: var(--blue);
+            }
+
+            50% {
+                color: var(--pink);
+            }
+
+            75% {
+                color: var(--red);
+            }
+
+            100% {
+                color: var(--cyan);
+            }
+
+        }
+
+        .hero h2 {
+            font-size: 25px;
+
+            letter-spacing: 3px;
+
+            text-shadow:
+                0 0 15px var(--cyan);
+        }
+
+        .hero p {
+            margin-top: 10px;
+
+            color: #777;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+        }
+
+        /* =====================
+           DOWNLOAD CARD
+        ===================== */
+
+        .download-card {
+            position: relative;
+
+            padding: 22px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(8,8,12,.78);
+
+            backdrop-filter: blur(15px);
+
+            border: 1px solid rgba(255,255,255,.1);
+
+            box-shadow:
+                0 0 30px rgba(0,255,255,.05);
+        }
+
+        .download-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: -1px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--cyan),
+                    var(--blue),
+                    var(--pink),
+                    var(--red),
+                    var(--cyan)
+                );
+
+            background-size: 300% 100%;
+
+            animation:
+                borderMove 5s linear infinite;
+
+            z-index: -1;
+        }
+
+        @keyframes borderMove {
+
+            0% {
+                background-position: 0%;
+            }
+
+            100% {
+                background-position: 300%;
+            }
+
+        }
+
+        /* =====================
+           PLATFORM SELECT
+        ===================== */
+
+        .platforms {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 8px;
+
+            margin-bottom: 18px;
+        }
+
+        .platform {
+
+            padding: 12px 5px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,.03);
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            color: #777;
+
+            font-family: 'Orbitron';
+
+            font-size: 9px;
+
+            cursor: pointer;
+
+            transition: .3s;
+        }
+
+        .platform.active,
+        .platform:hover {
+
+            color: var(--cyan);
+
+            border-color: var(--cyan);
+
+            background:
+                rgba(0,255,255,.06);
+
+            box-shadow:
+                0 0 15px rgba(0,255,255,.12);
+        }
+
+        /* =====================
+           INPUT
+        ===================== */
+
+        .input-label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 10px;
+
+            color: #777;
+
+            letter-spacing: 1px;
+        }
+
+        .url-box {
+
+            display: flex;
+
+            gap: 8px;
+
+            padding: 6px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(0,0,0,.45);
+
+            border:
+                1px solid rgba(255,255,255,.08);
+        }
+
+        .url-box input {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 13px 10px;
+
+            border: none;
+
+            outline: none;
+
+            background: transparent;
+
+            color: white;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+        }
+
+        .url-box input::placeholder {
+            color: #444;
+        }
+
+        .paste {
+
+            border: none;
+
+            border-radius: 9px;
+
+            padding: 0 12px;
+
+            background:
+                rgba(0,255,255,.08);
+
+            color: var(--cyan);
+
+            font-family: 'Orbitron';
+
+            font-size: 9px;
+
+            cursor: pointer;
+
+            transition: .3s;
+        }
+
+        .paste:hover {
+
+            background: var(--cyan);
+
+            color: black;
+
+            box-shadow:
+                0 0 15px var(--cyan);
+        }
+
+        /* =====================
+           DOWNLOAD BUTTON
+        ===================== */
+
+        .download {
+
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00ffff,
+                    #0066ff,
+                    #ff00ff
+                );
+
+            background-size: 200% 100%;
+
+            color: white;
+
+            font-family: 'Orbitron';
+
+            font-weight: 700;
+
+            font-size: 11px;
+
+            letter-spacing: 1px;
+
+            cursor: pointer;
+
+            animation:
+                buttonRGB 4s linear infinite;
+
+            box-shadow:
+                0 0 20px rgba(0,255,255,.2);
+        }
+
+        @keyframes buttonRGB {
+
+            0% {
+                background-position: 0%;
+            }
+
+            100% {
+                background-position: 200%;
+            }
+
+        }
+
+        .download:active {
+            transform: scale(.97);
+        }
+
+        /* =====================
+           FORMAT
+        ===================== */
+
+        .formats {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
+        .format {
+
+            flex: 1;
+
+            padding: 11px;
+
+            text-align: center;
+
+            border-radius: 10px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            background:
+                rgba(255,255,255,.02);
+
+            color: #777;
+
+            font-size: 9px;
+        }
+
+        .format.active {
+            color: var(--cyan);
+
+            border-color:
+                rgba(0,255,255,.3);
+        }
+
+        /* =====================
+           INFO
+        ===================== */
+
+        .info {
+
+            margin-top: 18px;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(0,255,255,.025);
+
+            border:
+                1px dashed
+                rgba(0,255,255,.15);
+
+            color: #666;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+
+            text-align: center;
+        }
+
+        footer {
+
+            margin-top: 30px;
+
+            text-align: center;
+
+            color: #444;
+
+            font-size: 8px;
+
+            letter-spacing: 2px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="background">
+
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+
+    </div>
+
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+            <a href="index.html" class="back">
+                ←
+            </a>
+
+            <div class="header-text">
+
+                <h1>XQIN DOWNLOADER</h1>
+
+                <p>
+                    DIGITAL MEDIA SYSTEM
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="hero-icon">
+                ↓
+            </div>
+
+            <h2>DOWNLOADER</h2>
+
+            <p>
+                Download your media with one interface.
+            </p>
+
+        </section>
+
+
+        <!-- DOWNLOAD CARD -->
+
+        <section class="download-card">
+
+            <!-- PLATFORM -->
+
+            <div class="platforms">
+
+                <button class="platform active">
+                    TIKTOK
+                </button>
+
+                <button class="platform">
+                    YOUTUBE
+                </button>
+
+                <button class="platform">
+                    INSTAGRAM
+                </button>
+
+            </div>
+
+
+            <!-- URL -->
+
+            <label class="input-label">
+                MEDIA URL
+            </label>
+
+            <div class="url-box">
+
+                <input
+                    type="text"
+                    placeholder="Paste link here..."
+                >
+
+                <button class="paste">
+                    PASTE
+                </button>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button class="download">
+                ⚡ DOWNLOAD
+            </button>
+
+
+            <!-- FORMAT -->
+
+            <div class="formats">
+
+                <div class="format active">
+                    VIDEO
+                </div>
+
+                <div class="format">
+                    AUDIO
+                </div>
+
+                <div class="format">
+                    HD
+                </div>
+
+            </div>
+
+
+            <!-- INFO -->
+
+            <div class="info">
+
+                ⚠ SYSTEM UI ONLY
+
+                <br>
+
+                Downloader API akan
+                dihubungkan pada tahap backend.
+
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            XQIN DIGITAL SYSTEM
+            <br><br>
+            © 2026
+
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        /* =====================
+           PLATFORM BUTTON
+        ===================== */
+
+        const platforms =
+            document.querySelectorAll(".platform");
+
+        platforms.forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                platforms.forEach(btn =>
+                    btn.classList.remove("active")
+                );
+
+                button.classList.add("active");
+
+            });
+
+        });
+
+
+        /* =====================
+           FORMAT BUTTON
+        ===================== */
+
+        const formats =
+            document.querySelectorAll(".format");
+
+        formats.forEach(format => {
+
+            format.addEventListener("click", () => {
+
+                formats.forEach(item =>
+                    item.classList.remove("active")
+                );
+
+                format.classList.add("active");
+
+            });
+
+        });
+
+
+        /* =====================
+           PASTE
+        ===================== */
+
+        const paste =
+            document.querySelector(".paste");
+
+        const input =
+            document.querySelector("input");
+
+        paste.addEventListener("click", async () => {
+
+            try {
+
+                const text =
+                    await navigator.clipboard.readText();
+
+                input.value = text;
+
+            } catch {
+
+                input.focus();
+
+            }
+
+        });
+
+
+        /* =====================
+           DOWNLOAD UI
+        ===================== */
+
+        const download =
+            document.querySelector(".download");
+
+        download.addEventListener("click", () => {
+
+            if (!input.value.trim()) {
+
+                input.focus();
+
+                input.placeholder =
+                    "Please enter a media URL...";
+
+                return;
+
+            }
+
+            download.textContent =
+                "PROCESSING...";
+
+            setTimeout(() => {
+
+                download.textContent =
+                    "DOWNLOAD";
+
+            }, 1500);
+
+        });
+
+    </script>
+
+</body>
+</html>
